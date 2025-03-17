@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Algorithm Playground - Infosys Cloud & Workforce Optimizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="brand-wrapper">
+                <h1><span class="highlight">Q</span>E<span class="highlight">O</span></h1>
+                <h2>Infosys Cloud & Workforce Optimizer</h2>
+                <div class="powered-by">Powered by Quantum-AI Hybrid Technology</div>
+            </div>
+        </div>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('quantum_playground_page') }}" class="active">Quantum Playground</a>
+            <a href="{{ url_for('data_format') }}">Data Format</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="card">
+            <div class="card-header">
+                <h3><i data-feather="cpu"></i> Quantum Circuit Builder</h3>
+            </div>
+            <div class="card-body">
+                <div class="playground-container">
+                    <div class="playground-controls">
+                        <div class="form-group">
+                            <label for="num-qubits">Number of Qubits:</label>
+                            <input type="number" id="num-qubits" min="1" max="12" value="3">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="circuit-type">Circuit Type:</label>
+                            <select id="circuit-type">
+                                <option value="empty">Empty Circuit</option>
+                                <option value="bell">Bell State</option>
+                                <option value="ghz">GHZ State</option>
+                                <option value="qft">Quantum Fourier Transform</option>
+                                <option value="random">Random Circuit</option>
+                            </select>
+                        </div>
+                        
+                        <button id="create-circuit" class="btn-primary">
+                            <i data-feather="play"></i> Create Circuit
+                        </button>
+                        
+                        <div class="status-message" id="circuit-status"></div>
+                        
+                        <div class="backend-selection">
+                            <h4><i data-feather="settings"></i> Simulation Settings</h4>
+                            
+                            <div class="form-group">
+                                <label for="backend-select">Backend:</label>
+                                <select id="backend-select">
+                                    <option value="qasm_simulator">QASM Simulator</option>
+                                    <option value="statevector_simulator">Statevector Simulator</option>
+                                    {% for backend in backends %}
+                                        {% if backend not in ['qasm_simulator', 'statevector_simulator'] %}
+                                            <option value="{{ backend }}">{{ backend }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="shots">Shots:</label>
+                                <input type="number" id="shots" min="1" max="10000" value="1024">
+                            </div>
+                            
+                            <button id="run-circuit" class="btn-secondary" disabled>
+                                <i data-feather="zap"></i> Run Circuit
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="playground-visualization">
+                        <div class="circuit-display">
+                            <h4><i data-feather="code"></i> Circuit Diagram</h4>
+                            <pre id="circuit-diagram" class="circuit-code"></pre>
+                        </div>
+                        
+                        <div class="results-container hidden" id="results-container">
+                            <h4><i data-feather="bar-chart-2"></i> Simulation Results</h4>
+                            
+                            <div class="results-summary" id="results-summary"></div>
+                            
+                            <div class="chart-container">
+                                <canvas id="results-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="card">
+            <div class="card-header">
+                <h3><i data-feather="info"></i> About Quantum Computing</h3>
+            </div>
+            <div class="card-body">
+                <div class="explanation-cards">
+                    <div class="explanation-card">
+                        <h4>Bell State</h4>
+                        <p>
+                            The Bell state is a maximally entangled quantum state of two qubits. After measuring one qubit, 
+                            the state of the other qubit is instantly determined, regardless of the distance between them.
+                        </p>
+                        <div class="card-formula">|Φ<sup>+</sup>⟩ = (|00⟩ + |11⟩)/√2</div>
+                    </div>
+                    
+                    <div class="explanation-card">
+                        <h4>GHZ State</h4>
+                        <p>
+                            The Greenberger-Horne-Zeilinger (GHZ) state is a multi-qubit entangled state that 
+                            demonstrates non-classical correlations between three or more qubits.
+                        </p>
+                        <div class="card-formula">|GHZ⟩ = (|00...0⟩ + |11...1⟩)/√2</div>
+                    </div>
+                    
+                    <div class="explanation-card">
+                        <h4>Quantum Fourier Transform</h4>
+                        <p>
+                            The Quantum Fourier Transform (QFT) is a quantum version of the discrete Fourier transform, 
+                            a key component in many quantum algorithms including Shor's factoring algorithm.
+                        </p>
+                        <div class="card-formula">|j⟩ → (1/√N) Σ<sub>k=0</sub><sup>N-1</sup> e<sup>2πijk/N</sup>|k⟩</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>Infosys Cloud & Workforce Optimizer</h3>
+                    <p>Powered by QEO - Quantum Enterprise Optimizer © 2023</p>
+                </div>
+                <div class="footer-tech">
+                    <div class="tech-item">
+                        <span class="tech-icon"><i data-feather="box"></i></span>
+                        <span class="tech-name">IBM Qiskit</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-icon"><i data-feather="cpu"></i></span>
+                        <span class="tech-name">OpenAI</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-icon"><i data-feather="database"></i></span>
+                        <span class="tech-name">PostgreSQL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/quantum-playground.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+        });
+    </script>
+</body>
+</html>
